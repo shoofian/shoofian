@@ -38,6 +38,11 @@ const LANG = {
       ytBtn: '▶️ Kunjungi Channel YouTube',
       igTitle: '📸 Feed Instagram',
       igBtn: '📸 Ikuti di Instagram'
+    },
+    gradeChecker: {
+      title: '📝 Cek Nilai Siswa',
+      desc: 'Masukkan Nomor Induk Siswa (NIS) atau kunci akses Anda pada aplikasi di bawah ini untuk melihat daftar nilai, detail tugas, dan hasil ujian secara langsung.',
+      btn: '🔗 Buka Aplikasi CekNilaimu di Tab Baru'
     }
   },
   en: {
@@ -55,6 +60,11 @@ const LANG = {
       ytBtn: '▶️ Visit YouTube Channel',
       igTitle: '📸 Instagram Feed',
       igBtn: '📸 Follow on Instagram'
+    },
+    gradeChecker: {
+      title: '📝 Student Grade Checker',
+      desc: 'Enter your Student ID (NIS) or access key in the application below to view your grade lists, assignment details, and exam results directly.',
+      btn: '🔗 Open CekNilaimu App in New Tab'
     }
   }
 };
@@ -207,6 +217,14 @@ async function applyProfileToPage() {
   if (sIgTitle) sIgTitle.textContent = LANG[currentLang].social.igTitle;
   const sIgBtn = $('#social-ig-btn');
   if (sIgBtn) sIgBtn.innerHTML = LANG[currentLang].social.igBtn;
+
+  // Translate grade checker section
+  const gcTitle = $('#grade-checker-title');
+  if (gcTitle) gcTitle.textContent = LANG[currentLang].gradeChecker.title;
+  const gcDesc = $('#grade-checker-desc');
+  if (gcDesc) gcDesc.textContent = LANG[currentLang].gradeChecker.desc;
+  const gcBtn = $('#grade-checker-btn');
+  if (gcBtn) gcBtn.textContent = LANG[currentLang].gradeChecker.btn;
 }
 
 function renderSkills(skills) {
