@@ -1,245 +1,290 @@
 /**
- * data.js — Supabase Data Manager (v3)
- * Web Profile Guru Informatika
+ * data.js — Static Data Manager (v4 - Static Edition)
+ * Web Profile Guru Informatika & Quality Assurance Analyst
  *
- * ⚙️ KONFIGURASI: Isi SUPABASE_URL dan SUPABASE_ANON_KEY di bawah ini
- *    Dapatkan dari: Supabase Dashboard → Settings → API
+ * 👤 Pemilik: Wahyu Shofian
+ * 📂 Menyimpan seluruh data portofolio & CV secara lokal (Statis).
+ *    Untuk mengubah konten website, Anda cukup memperbarui data di dalam file ini.
  */
 
 'use strict';
 
 // ============================================================
-//  ⚙️  KONFIGURASI SUPABASE — WAJIB DIISI
-// ============================================================
-const SUPABASE_URL      = 'YOUR_SUPABASE_URL';       // contoh: https://abcxyz.supabase.co
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';  // contoh: eyJhbGciOi...
+//  💾 DATA PORTFOLIO & CV (WAHYU SHOFIAN)
 // ============================================================
 
-// Inisialisasi Supabase Client (via CDN)
-const { createClient } = window.supabase;
-const _sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-  auth: { persistSession: true, autoRefreshToken: true }
-});
-
-/* ============================================================
-   DB — Central async data manager
-   ============================================================ */
-const DB = {
-  client: _sb,
-
-  /** Cache in-memory agar tidak query berulang di halaman yang sama */
-  _cache: {},
-  clearCache(key) {
-    if (key) delete this._cache[key];
-    else this._cache = {};
-  },
-
-  /* ---- HELPERS ---- */
-  _handle(result, fallback = null) {
-    if (result.error) {
-      console.error('[DB Error]', result.error.message);
-      return fallback;
-    }
-    return result.data;
-  },
-
-  /* ============================================================
-     PROFILE
-     ============================================================ */
-  async getProfile() {
-    if (this._cache.profile) return this._cache.profile;
-    const result = await this.client.from('profile').select('*').single();
-    const data = this._handle(result);
-    if (data) this._cache.profile = data;
-    return data;
-  },
-
-  async setProfile(profileData) {
-    this.clearCache('profile');
-    const { id, created_at, ...rest } = profileData;
-    const result = await this.client.from('profile').update(rest).eq('id', profileData.id || 1);
-    return !result.error;
-  },
-
-  /* ============================================================
-     SCHOOLS
-     ============================================================ */
-  async getSchools() {
-    if (this._cache.schools) return this._cache.schools;
-    const result = await this.client.from('schools').select('*').order('order_num');
-    const data = this._handle(result, []);
-    this._cache.schools = data;
-    return data;
-  },
-
-  async addSchool(school) {
-    this.clearCache('schools');
-    const max = (await this.getSchools()).length;
-    const result = await this.client.from('schools').insert({ ...school, order_num: max + 1 });
-    return !result.error;
-  },
-
-  async updateSchool(id, school) {
-    this.clearCache('schools');
-    const result = await this.client.from('schools').update(school).eq('id', id);
-    return !result.error;
-  },
-
-  async deleteSchool(id) {
-    this.clearCache('schools');
-    const result = await this.client.from('schools').delete().eq('id', id);
-    return !result.error;
-  },
-
-  /* ============================================================
-     EXPERIENCES
-     ============================================================ */
-  async getExperiences() {
-    if (this._cache.experiences) return this._cache.experiences;
-    const result = await this.client.from('experiences').select('*').order('order_num');
-    const data = this._handle(result, []);
-    this._cache.experiences = data;
-    return data;
-  },
-
-  async addExperience(exp) {
-    this.clearCache('experiences');
-    const max = (await this.getExperiences()).length;
-    const result = await this.client.from('experiences').insert({ ...exp, order_num: max + 1 });
-    return !result.error;
-  },
-
-  async updateExperience(id, exp) {
-    this.clearCache('experiences');
-    const result = await this.client.from('experiences').update(exp).eq('id', id);
-    return !result.error;
-  },
-
-  async deleteExperience(id) {
-    this.clearCache('experiences');
-    const result = await this.client.from('experiences').delete().eq('id', id);
-    return !result.error;
-  },
-
-  /* ============================================================
-     PROJECTS
-     ============================================================ */
-  async getProjects() {
-    if (this._cache.projects) return this._cache.projects;
-    const result = await this.client.from('projects').select('*').order('order_num');
-    const data = this._handle(result, []);
-    this._cache.projects = data;
-    return data;
-  },
-
-  async addProject(project) {
-    this.clearCache('projects');
-    const max = (await this.getProjects()).length;
-    const result = await this.client.from('projects').insert({ ...project, order_num: max + 1 });
-    return !result.error;
-  },
-
-  async updateProject(id, project) {
-    this.clearCache('projects');
-    const { id: _id, created_at, ...rest } = project;
-    const result = await this.client.from('projects').update(rest).eq('id', id);
-    return !result.error;
-  },
-
-  async deleteProject(id) {
-    this.clearCache('projects');
-    const result = await this.client.from('projects').delete().eq('id', id);
-    return !result.error;
-  },
-
-  /* ============================================================
-     MATERIALS
-     ============================================================ */
-  async getMaterials() {
-    if (this._cache.materials) return this._cache.materials;
-    const result = await this.client.from('materials').select('*').order('order_num');
-    const data = this._handle(result, []);
-    this._cache.materials = data;
-    return data;
-  },
-
-  async addMaterial(material) {
-    this.clearCache('materials');
-    const max = (await this.getMaterials()).length;
-    const result = await this.client.from('materials').insert({ ...material, order_num: max + 1 });
-    return !result.error;
-  },
-
-  async updateMaterial(id, material) {
-    this.clearCache('materials');
-    const { id: _id, created_at, ...rest } = material;
-    const result = await this.client.from('materials').update(rest).eq('id', id);
-    return !result.error;
-  },
-
-  async deleteMaterial(id) {
-    this.clearCache('materials');
-    const result = await this.client.from('materials').delete().eq('id', id);
-    return !result.error;
-  },
-
-  /* ============================================================
-     AUTH (Supabase Auth — email + password)
-     ============================================================ */
-  async login(email, password) {
-    const { data, error } = await this.client.auth.signInWithPassword({ email, password });
-    return { success: !error, error: error?.message, session: data?.session };
-  },
-
-  async logout() {
-    await this.client.auth.signOut();
-  },
-
-  async getSession() {
-    const { data } = await this.client.auth.getSession();
-    return data?.session || null;
-  },
-
-  async isAuthenticated() {
-    const session = await this.getSession();
-    return !!session;
-  },
-
-  /* ============================================================
-     STORAGE — Upload gambar ke Supabase Storage
-     ============================================================ */
-  async uploadImage(file) {
-    const ext  = file.name.split('.').pop().toLowerCase();
-    const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-    const { error } = await this.client.storage.from('images').upload(path, file, {
-      cacheControl: '3600', upsert: false, contentType: file.type
-    });
-    if (error) { console.error('[Upload Error]', error.message); return null; }
-    const { data } = this.client.storage.from('images').getPublicUrl(path);
-    return data.publicUrl;
-  },
-
-  /* ============================================================
-     REAL-TIME — Subscribe perubahan data
-     ============================================================ */
-  subscribeToChanges(table, callback) {
-    return this.client.channel(`realtime:${table}`)
-      .on('postgres_changes', { event: '*', schema: 'public', table }, (payload) => {
-        this.clearCache(table);
-        callback(payload);
-      })
-      .subscribe();
-  },
+const STATIC_PROFILE = {
+  id: 1,
+  name: 'Wahyu Shofian',
+  tagline: 'Data & Software Enthusiast | Informatics Educator | Quality Assurance Analyst',
+  
+  // Biografi (Bilingual)
+  bio_id: 'Saya adalah antusias data dan perangkat lunak yang memiliki pengalaman profesional di bidang pendidikan, jaminan kualitas perangkat lunak (Quality Assurance), dan pengembangan aplikasi seluler. Terampil dalam mengolah data menjadi informasi yang berharga serta memastikan keandalan sistem perangkat lunak.',
+  bio_en: 'Results-driven data and software enthusiast with professional experience in education, software quality assurance, and mobile application development. Skilled in transforming data into actionable insights and ensuring software reliability through structured testing and analysis.',
+  
+  bio2_id: 'Memiliki kecintaan mendalam untuk membangun solusi digital yang berdampak nyata serta menumbuhkan pemikiran logis berbasis teknologi melalui pendidikan komputer dan informatika.',
+  bio2_en: 'Passionate about building impactful digital solutions and fostering logical, technology-driven thinking through education.',
+  
+  avatar: 'assets/img/profile-avatar.png',
+  
+  // Statistik
+  stat_years: 5,      // Tahun pengalaman gabungan
+  stat_students: 500,  // Estimasi siswa terdidik
+  stat_projects: 15,   // Jumlah proyek selesai
+  
+  badge_id: 'Tersedia untuk Kolaborasi',
+  badge_en: 'Available for Collaboration',
+  
+  // Kontak
+  city: 'Berau',
+  email: 'wahyushofian@email.com', // Silakan ganti dengan email asli Anda
+  whatsapp: '628123456789',        // Silakan ganti dengan nomor WA asli Anda
+  location: 'Berau, Kalimantan Timur, Indonesia',
+  
+  // Sosial Media
+  social_github: 'https://github.com/shoofian',
+  social_linkedin: 'https://linkedin.com/in/shoofian', // Silakan ganti dengan username asli LinkedIn Anda jika berbeda
+  social_youtube: '#',
+  social_instagram: '#',
+  
+  // Daftar Keahlian (Skills)
+  skills: [
+    { icon: '🐍', name: 'Python' },
+    { icon: '💻', name: 'C++' },
+    { icon: '📊', name: 'Data Analysis' },
+    { icon: '📈', name: 'Data Visualization' },
+    { icon: '🤖', name: 'Machine Learning' },
+    { icon: '🔍', name: 'Manual Testing' },
+    { icon: '🐛', name: 'Bug Reporting' },
+    { icon: '🖥️', name: 'System Monitoring' },
+    { icon: '👨‍🏫', name: 'Informatics Education' },
+    { icon: '🔀', name: 'Algorithm Design' },
+    { icon: '📱', name: 'Android Studio' },
+    { icon: '🔧', name: 'Testing Tools' }
+  ]
 };
 
-/* ============================================================
-   CEK KONFIGURASI — Tampilkan peringatan jika belum diisi
-   ============================================================ */
-if (SUPABASE_URL === 'YOUR_SUPABASE_URL' || SUPABASE_ANON_KEY === 'YOUR_SUPABASE_ANON_KEY') {
-  console.warn(
-    '%c⚠️ Supabase belum dikonfigurasi!\n' +
-    'Buka js/data.js dan isi SUPABASE_URL & SUPABASE_ANON_KEY\n' +
-    'Lihat panduan di SETUP_GUIDE.md',
-    'color: orange; font-size: 14px; font-weight: bold;'
-  );
-}
+const STATIC_SCHOOLS = [
+  {
+    id: 1,
+    icon: '🏫',
+    name: 'SMAN 4 Berau',
+    detail: 'Informatika · Kelas X, XI, XII',
+    status: 'Aktif',
+    order_num: 1
+  },
+  {
+    id: 2,
+    icon: '🏢',
+    name: 'Memofy Studio',
+    detail: 'System Quality Assurance Analyst',
+    status: 'Aktif',
+    order_num: 2
+  },
+  {
+    id: 3,
+    icon: '🎓',
+    name: 'Universitas Ahmad Dahlan',
+    detail: 'Asisten Praktikum Pemrograman Mobile',
+    status: 'Alumni',
+    order_num: 3
+  }
+];
+
+const STATIC_EXPERIENCES = [
+  {
+    id: 1,
+    icon: '👨‍🏫',
+    period: 'Februari 2022 – Sekarang',
+    title: 'Informatics Teacher',
+    place: 'SMAN 4 Berau · Berau, Kalimantan Timur',
+    order_num: 1
+  },
+  {
+    id: 2,
+    icon: '🔍',
+    period: 'September 2020 – Sekarang',
+    title: 'System Quality Assurance Analyst',
+    place: 'Memofy Studio',
+    order_num: 2
+  },
+  {
+    id: 3,
+    icon: '📱',
+    period: 'Desember 2019 – Juli 2021',
+    title: 'Freelance Mobile Application Developer',
+    place: 'Pengembangan Aplikasi Android Edukasi',
+    order_num: 3
+  },
+  {
+    id: 4,
+    icon: '🎓',
+    period: 'September 2019 – Januari 2020',
+    title: 'Mobile Programming Practicum Assistant',
+    place: 'Universitas Ahmad Dahlan · Yogyakarta',
+    order_num: 4
+  }
+];
+
+const STATIC_PROJECTS = [
+  {
+    id: 1,
+    type: 'mine',
+    title_id: 'Aplikasi Media Pembelajaran Interaktif (Android)',
+    title_en: 'Interactive Learning Media App (Android)',
+    desc_id: 'Aplikasi mobile berbasis Android untuk mendukung pembelajaran interaktif siswa, dikembangkan menggunakan Android Studio.',
+    desc_en: 'An Android-based mobile application to support interactive student learning, developed using Android Studio.',
+    category_id: 'Aplikasi Mobile',
+    category_en: 'Mobile Application',
+    image: 'assets/img/proj-2.png',
+    tags: 'Android Studio,Java,SQLite,Educational',
+    demo: '#',
+    github: 'https://github.com/shoofian',
+    order_num: 1
+  },
+  {
+    id: 2,
+    type: 'mine',
+    title_id: 'Visualisasi & Analisis Data Nilai Siswa',
+    title_en: 'Student Grades Visualization & Analysis',
+    desc_id: 'Proyek analisis data hasil belajar siswa menggunakan Python untuk mengidentifikasi area pemahaman materi dan meningkatkan efektivitas pengajaran.',
+    desc_en: 'A data analysis project on student learning outcomes using Python to identify key area comprehension and improve teaching effectiveness.',
+    category_id: 'Analisis Data',
+    category_en: 'Data Analysis',
+    image: 'assets/img/proj-3.png',
+    tags: 'Python,Pandas,Matplotlib,Data Analytics',
+    demo: '#',
+    github: 'https://github.com/shoofian',
+    order_num: 2
+  },
+  {
+    id: 3,
+    type: 'student',
+    title_id: 'Website Portofolio Digital Kelas XI',
+    title_en: 'Digital Portfolio Website of 11th Grade Students',
+    desc_id: 'Kumpulan portofolio digital berbasis web responsif yang dirancang oleh siswa-siswi kelas XI dalam mata pelajaran Informatika menggunakan HTML, CSS, dan JavaScript dasar.',
+    desc_en: 'A collection of responsive web-based digital portfolios designed by 11th-grade students in Informatics class using basic HTML, CSS, and JavaScript.',
+    category_id: 'Karya Siswa',
+    category_en: 'Student Work',
+    image: 'assets/img/proj-1.png',
+    tags: 'HTML,CSS,JavaScript,Responsive Design',
+    demo: '#',
+    github: 'https://github.com/shoofian',
+    order_num: 3
+  }
+];
+
+const STATIC_MATERIALS = [
+  {
+    id: 1,
+    type: 'pdf',
+    title_id: 'Modul Praktis Pemrograman Python untuk Pemula',
+    title_en: 'Practical Python Programming Module for Beginners',
+    desc_id: 'Modul pengantar pemrograman Python dasar yang diajarkan pada kelas X Informatika SMAN 4 Berau, mencakup sintaks, logika, dan struktur data sederhana.',
+    desc_en: 'An introductory Python programming module taught in 10th-grade Informatics class at SMAN 4 Berau, covering syntax, logic, and simple data structures.',
+    subject_id: 'Pemrograman Dasar',
+    subject_en: 'Basic Programming',
+    level: 'SMA Kelas X',
+    size: '2.5 MB',
+    updated: '2024',
+    url: '#',
+    video_url: '',
+    order_num: 1
+  },
+  {
+    id: 2,
+    type: 'slide',
+    title_id: 'Slide Presentasi: Konsep Berpikir Komputasional',
+    title_en: 'Computational Thinking Concept Slides',
+    desc_id: 'Slide presentasi interaktif mengenai 4 pilar berpikir komputasional: Dekomposisi, Pengenalan Pola, Abstraksi, dan Perancangan Algoritma.',
+    desc_en: 'Interactive presentation slides about the 4 pillars of computational thinking: Decomposition, Pattern Recognition, Abstraction, and Algorithm Design.',
+    subject_id: 'Informatika',
+    subject_en: 'Informatics',
+    level: 'SMP / SMA',
+    size: '4.8 MB',
+    updated: '2024',
+    url: '#',
+    video_url: '',
+    order_num: 2
+  },
+  {
+    id: 3,
+    type: 'video',
+    title_id: 'Video Tutorial: Logika Pemrograman & Flowchart',
+    title_en: 'Video Tutorial: Programming Logic & Flowcharts',
+    desc_id: 'Video pembelajaran interaktif yang menjelaskan logika komputer, alur program menggunakan diagram alir (flowchart), dan penerapannya.',
+    desc_en: 'Interactive learning video explaining computer logic, program flow using flowcharts, and its applications.',
+    subject_id: 'Logika Komputer',
+    subject_en: 'Computer Logic',
+    level: 'Umum / SMA',
+    size: 'YouTube',
+    updated: '2023',
+    url: '#',
+    video_url: 'https://www.youtube.com/embed/qz0aGYrrlhU',
+    order_num: 3
+  },
+  {
+    id: 4,
+    type: 'pdf',
+    title_id: 'Panduan Dasar Manual Testing & Pelaporan Bug',
+    title_en: 'Basic Manual Testing & Bug Reporting Guide',
+    desc_id: 'Materi dasar penjaminan kualitas perangkat lunak (QA) tentang cara merancang skenario uji (test cases) dan menulis laporan bug yang informatif.',
+    desc_en: 'Software Quality Assurance (QA) basics material on designing test scenarios (test cases) and writing informative bug reports.',
+    subject_id: 'Quality Assurance',
+    subject_en: 'Quality Assurance',
+    level: 'Umum / Pemula',
+    size: '1.8 MB',
+    updated: '2024',
+    url: '#',
+    video_url: '',
+    order_num: 4
+  }
+];
+
+
+// ============================================================
+//  🎛️ DB IMPLEMENTATION (Mocking Supabase Client API)
+// ============================================================
+
+const DB = {
+  // Mocking client to avoid breaks
+  client: {
+    auth: {
+      getSession: async () => ({ data: { session: null } }),
+      signInWithPassword: async () => ({ error: { message: 'Mode Statis Aktif' } }),
+      signOut: async () => {}
+    }
+  },
+
+  async getProfile() {
+    return STATIC_PROFILE;
+  },
+
+  async getSchools() {
+    return STATIC_SCHOOLS;
+  },
+
+  async getExperiences() {
+    return STATIC_EXPERIENCES;
+  },
+
+  async getProjects() {
+    return STATIC_PROJECTS;
+  },
+
+  async getMaterials() {
+    return STATIC_MATERIALS;
+  },
+
+  // Auth functions return neutral/disabled states
+  async login() {
+    return { success: false, error: 'Database dinamis (Supabase) dinonaktifkan di edisi statis ini.' };
+  },
+  async logout() {},
+  async getSession() { return null; },
+  async isAuthenticated() { return false; },
+  async uploadImage() { return null; },
+  subscribeToChanges() {
+    return { unsubscribe: () => {} };
+  }
+};
