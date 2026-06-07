@@ -58,6 +58,7 @@
       <li><a href="#about"     class="nav-link"        id="nav-about">Tentang</a></li>
       <li><a href="#projects"  class="nav-link"        id="nav-projects">Portofolio</a></li>
       <li><a href="#ws-class"  class="nav-link"        id="nav-ws-class">WS Class</a></li>
+      <li><a href="#social-feed" class="nav-link"        id="nav-social">Media Sosial</a></li>
       <li><a href="#contact"   class="nav-link"        id="nav-contact">Kontak</a></li>
     </ul>
 
@@ -83,6 +84,7 @@
   <a href="#about"     class="nav-link">Tentang</a>
   <a href="#projects"  class="nav-link">Portofolio</a>
   <a href="#ws-class"  class="nav-link" id="nav-mobile-ws-class">WS Class</a>
+  <a href="#social-feed" class="nav-link" id="nav-mobile-social">Media Sosial</a>
   <a href="#contact"   class="nav-link">Kontak</a>
   <div style="display:flex;gap:0.5rem;margin-top:1rem;">
     <button class="lang-btn active" data-lang="id">ID</button>
@@ -386,6 +388,51 @@
 </section>
 
 <!-- ========================================
+     SOCIAL MEDIA FEED SECTION
+     ======================================== -->
+<section id="social-feed" class="section" aria-labelledby="social-feed-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag" id="social-tag">📷 Media Sosial</div>
+      <h2 class="section-title" id="social-feed-heading">
+        Aktivitas <span class="highlight">Terbaru</span>
+      </h2>
+      <p class="section-desc" id="social-desc">
+        Ikuti update terbaru, tutorial pemrograman, dan dokumentasi kegiatan saya di YouTube dan Instagram.
+      </p>
+    </div>
+
+    <div class="social-feed-container">
+      <!-- Kiri: YouTube -->
+      <div class="youtube-feed reveal">
+        <h3 class="social-feed-sub-title" id="social-yt-title">🎬 Video YouTube Terbaru</h3>
+        <div id="youtube-videos-grid" class="youtube-videos-grid">
+          <!-- Injected dynamically by main.js -->
+        </div>
+        <div class="social-feed-action-wrap">
+          <a href="https://youtube.com/@WahyuShofian" target="_blank" rel="noopener" class="btn btn-outline btn-sm" id="social-yt-btn">
+            ▶️ Kunjungi Channel YouTube
+          </a>
+        </div>
+      </div>
+
+      <!-- Kanan: Instagram -->
+      <div class="instagram-feed reveal">
+        <h3 class="social-feed-sub-title" id="social-ig-title">📸 Feed Instagram</h3>
+        <div id="instagram-photos-grid" class="instagram-photos-grid">
+          <!-- Injected dynamically by main.js -->
+        </div>
+        <div class="social-feed-action-wrap">
+          <a href="https://instagram.com/shoofian" target="_blank" rel="noopener" class="btn btn-outline btn-sm" id="social-ig-btn">
+            📸 Ikuti di Instagram
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
      CONTACT SECTION
      ======================================== -->
 <section id="contact" class="section" aria-labelledby="contact-heading">
@@ -524,6 +571,7 @@
         <a href="#about"     class="footer-link">Tentang</a>
         <a href="#projects"  class="footer-link">Portofolio</a>
         <a href="#ws-class"  class="footer-link" id="footer-ws-class">WS Class</a>
+        <a href="#social-feed" class="footer-link" id="footer-social">Media Sosial</a>
         <a href="#contact"   class="footer-link">Kontak</a>
       </nav>
     </div>

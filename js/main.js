@@ -24,20 +24,38 @@ const CONFIG = {
    ------------------------------------------------ */
 const LANG = {
   id: {
-    nav: { home:'Beranda', about:'Tentang', projects:'Portofolio', wsClass:'WS Class', contact:'Kontak' },
+    nav: { home:'Beranda', about:'Tentang', projects:'Portofolio', wsClass:'WS Class', socialFeed:'Media Sosial', contact:'Kontak' },
     hero: {
       badge:'Tersedia untuk Kolaborasi', desc:'Bersemangat dalam mendidik generasi digital masa depan.',
       cta1:'Lihat Portofolio', cta2:'Hubungi Saya',
     },
     materials: { filterAll:'Semua', filterPdf:'PDF', filterSlide:'Slide', filterVideo:'Video' },
+    social: {
+      tag: '📷 Media Sosial',
+      title: 'Aktivitas <span class="highlight">Terbaru</span>',
+      desc: 'Ikuti update terbaru, tutorial pemrograman, dan dokumentasi kegiatan saya di YouTube dan Instagram.',
+      ytTitle: '🎬 Video YouTube Terbaru',
+      ytBtn: '▶️ Kunjungi Channel YouTube',
+      igTitle: '📸 Feed Instagram',
+      igBtn: '📸 Ikuti di Instagram'
+    }
   },
   en: {
-    nav: { home:'Home', about:'About', projects:'Portfolio', wsClass:'WS Class', contact:'Contact' },
+    nav: { home:'Home', about:'About', projects:'Portfolio', wsClass:'WS Class', socialFeed:'Social Media', contact:'Contact' },
     hero: {
       badge:'Available for Collaboration', desc:'Passionate about educating the next generation of digital innovators.',
       cta1:'View Portfolio', cta2:'Contact Me',
     },
     materials: { filterAll:'All', filterPdf:'PDF', filterSlide:'Slide', filterVideo:'Video' },
+    social: {
+      tag: '📷 Social Media',
+      title: 'Latest <span class="highlight">Updates</span>',
+      desc: 'Follow my latest updates, coding tutorials, and activities on YouTube and Instagram.',
+      ytTitle: '🎬 Latest YouTube Videos',
+      ytBtn: '▶️ Visit YouTube Channel',
+      igTitle: '📸 Instagram Feed',
+      igBtn: '📸 Follow on Instagram'
+    }
   }
 };
 
@@ -166,6 +184,29 @@ async function applyProfileToPage() {
   if (fAllStudent) fAllStudent.innerHTML = currentLang === 'id' ? '🗂️ Semua Karya' : '🗂️ All Works';
   if (fComp) fComp.innerHTML = currentLang === 'id' ? '🎬 Berpikir Komputasional' : '🎬 Computational Thinking';
   if (fSec) fSec.innerHTML = currentLang === 'id' ? '🔒 Keamanan Siber' : '🔒 Cyber Security';
+
+  // Translate social media section
+  const navSocial = $('#nav-social');
+  if (navSocial) navSocial.textContent = LANG[currentLang].nav.socialFeed;
+  const mobSocial = $('#nav-mobile-social');
+  if (mobSocial) mobSocial.textContent = LANG[currentLang].nav.socialFeed;
+  const footSocial = $('#footer-social');
+  if (footSocial) footSocial.textContent = LANG[currentLang].nav.socialFeed;
+
+  const sTag = $('#social-tag');
+  if (sTag) sTag.innerHTML = LANG[currentLang].social.tag;
+  const sTitle = $('#social-feed-heading');
+  if (sTitle) sTitle.innerHTML = LANG[currentLang].social.title;
+  const sDesc = $('#social-desc');
+  if (sDesc) sDesc.textContent = LANG[currentLang].social.desc;
+  const sYtTitle = $('#social-yt-title');
+  if (sYtTitle) sYtTitle.textContent = LANG[currentLang].social.ytTitle;
+  const sYtBtn = $('#social-yt-btn');
+  if (sYtBtn) sYtBtn.innerHTML = LANG[currentLang].social.ytBtn;
+  const sIgTitle = $('#social-ig-title');
+  if (sIgTitle) sIgTitle.textContent = LANG[currentLang].social.igTitle;
+  const sIgBtn = $('#social-ig-btn');
+  if (sIgBtn) sIgBtn.innerHTML = LANG[currentLang].social.igBtn;
 }
 
 function renderSkills(skills) {
@@ -355,6 +396,7 @@ function initLangToggle() {
     await renderProjects();
     await renderMaterials();
     await renderStudentWorks();
+    await renderSocialFeed();
   }));
 }
 
@@ -491,6 +533,81 @@ function initStudentFilters() {
       if (show) requestAnimationFrame(() => card.classList.add('visible'));
     });
   }));
+}
+
+/* ------------------------------------------------
+   SOCIAL FEEDS (YouTube & Instagram)
+   ------------------------------------------------ */
+async function renderSocialFeed() {
+  const ytGrid = $('#youtube-videos-grid');
+  if (ytGrid) {
+    ytGrid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--color-text-muted);">⏳ Memuat...</div>';
+    const videos = await DB.getYoutubeVideos();
+    ytGrid.innerHTML = '';
+    
+    if (videos && videos.length) {
+      videos.forEach((vid, i) => {
+        const card = document.createElement('div');
+        card.className = `youtube-card reveal reveal-delay-${(i % 3) + 1}`;
+        const title = currentLang === 'id' ? vid.title_id : (vid.title_en || vid.title_id);
+        const thumbUrl = `https://img.youtube.com/vi/${vid.video_id}/hqdefault.jpg`;
+        
+        card.innerHTML = `
+          <div class="youtube-thumbnail-wrap">
+            <img src="${thumbUrl}" alt="${title}" loading="lazy">
+            <div class="youtube-play-overlay">
+              <span class="youtube-play-icon">▶️</span>
+            </div>
+          </div>
+          <div class="youtube-card-info">
+            <h4 class="youtube-card-title">${title}</h4>
+            <span class="youtube-card-meta">${vid.views} views</span>
+          </div>
+        `;
+        card.addEventListener('click', () => window.open(vid.url, '_blank'));
+        ytGrid.appendChild(card);
+      });
+      $$('#youtube-videos-grid .reveal').forEach(el => {
+        const obs = new IntersectionObserver(entries => {
+          entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+        }, { threshold: 0.1 });
+        obs.observe(el);
+      });
+    }
+  }
+
+  const igGrid = $('#instagram-photos-grid');
+  if (igGrid) {
+    igGrid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--color-text-muted);">⏳ Memuat...</div>';
+    const photos = await DB.getInstagramFeed();
+    igGrid.innerHTML = '';
+    
+    if (photos && photos.length) {
+      photos.forEach((photo, i) => {
+        const card = document.createElement('div');
+        card.className = `instagram-card reveal reveal-delay-${(i % 4) + 1}`;
+        
+        card.innerHTML = `
+          <img src="${photo.image}" alt="Instagram Post" loading="lazy">
+          <div class="instagram-overlay">
+            <div class="instagram-stats">
+              <span>❤️ ${photo.likes}</span>
+              <span>💬 ${photo.comments}</span>
+            </div>
+            <p class="instagram-caption-hover">${photo.caption.substring(0, 50)}...</p>
+          </div>
+        `;
+        card.addEventListener('click', () => window.open(photo.url, '_blank'));
+        igGrid.appendChild(card);
+      });
+      $$('#instagram-photos-grid .reveal').forEach(el => {
+        const obs = new IntersectionObserver(entries => {
+          entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+        }, { threshold: 0.1 });
+        obs.observe(el);
+      });
+    }
+  }
 }
 
 /* ------------------------------------------------
@@ -718,6 +835,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initMaterialFilters();
     await renderStudentWorks();
     initStudentFilters();
+    await renderSocialFeed();
     initScrollReveal();
 
   } catch (err) {

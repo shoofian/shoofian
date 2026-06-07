@@ -548,6 +548,72 @@ const STATIC_MATERIALS = [
 
 
 // ============================================================
+//  📷 SOCIAL MEDIA DATA
+// ============================================================
+
+const STATIC_YOUTUBE = [
+  {
+    id: 1,
+    video_id: 'LqUW3MxU0Pc',
+    title_id: 'Analisis Data (3): Pengolahan Data',
+    title_en: 'Data Analysis (3): Data Processing',
+    views: '1.2K',
+    url: 'https://www.youtube.com/watch?v=LqUW3MxU0Pc'
+  },
+  {
+    id: 2,
+    video_id: 'kznAt89pSus',
+    title_id: 'Analisis Data (4): Visualisasi Data',
+    title_en: 'Data Analysis (4): Data Visualization',
+    views: '850',
+    url: 'https://www.youtube.com/watch?v=kznAt89pSus'
+  },
+  {
+    id: 3,
+    video_id: 'HmGlklA8E3Q',
+    title_id: 'Analisis Data (5): Penarikan Kesimpulan & Tugas',
+    title_en: 'Data Analysis (5): Conclusion & Assignment',
+    views: '920',
+    url: 'https://www.youtube.com/watch?v=HmGlklA8E3Q'
+  }
+];
+
+const STATIC_INSTAGRAM = [
+  {
+    id: 1,
+    image: 'assets/img/instagram-workspace.png',
+    caption: 'Creating modern clean UI designs and writing automated QA test cases. 💻🚀 #workspace #developer #qa #deskvibe',
+    likes: 142,
+    comments: 18,
+    url: 'https://instagram.com/shoofian'
+  },
+  {
+    id: 2,
+    image: 'assets/img/instagram-teaching.png',
+    caption: 'Teaching Informatics and Computational Thinking in classroom. Sharing knowledge is the best way of learning! 🏫📚 #educator #teaching #informatics',
+    likes: 185,
+    comments: 24,
+    url: 'https://instagram.com/shoofian'
+  },
+  {
+    id: 3,
+    image: 'assets/img/instagram-testing.png',
+    caption: 'Data analysis and software testing metrics. Monitoring bugs and keeping quality high! 📊🕵️‍♂️ #qa #dataanalysis #softwaretesting',
+    likes: 128,
+    comments: 12,
+    url: 'https://instagram.com/shoofian'
+  },
+  {
+    id: 4,
+    image: 'assets/img/instagram-berau.png',
+    caption: 'Connecting with nature in Berau, East Kalimantan. Golden hour at the river banks. 🌅🍃 #berau #nature #kalimantan #exploreindonesia',
+    likes: 215,
+    comments: 32,
+    url: 'https://instagram.com/shoofian'
+  }
+];
+
+// ============================================================
 //  🎛️ DB IMPLEMENTATION (Mocking Supabase Client API)
 // ============================================================
 
@@ -562,6 +628,14 @@ const DB = {
 
   async getProfile() {
     return STATIC_PROFILE;
+  },
+
+  async getYoutubeVideos() {
+    return STATIC_YOUTUBE;
+  },
+
+  async getInstagramFeed() {
+    return STATIC_INSTAGRAM;
   },
 
   async getSchools() {
