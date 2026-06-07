@@ -42,7 +42,7 @@ const STATIC_PROFILE = {
   
   // Sosial Media
   social_github: 'https://github.com/shoofian',
-  social_linkedin: 'https://linkedin.com/in/shoofian',
+  social_linkedin: 'https://linkedin.com/in/wahyushofian',
   social_youtube: 'https://youtube.com/@WahyuShofian',
   social_instagram: 'https://instagram.com/shoofian',
   social_twitter: 'https://x.com/shoofian',
