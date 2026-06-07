@@ -332,6 +332,54 @@ const STATIC_PROJECTS = [
     github: '#',
     video_url: 'https://www.youtube.com/embed/A7pMUbVc_Vg',
     order_num: 13
+  },
+  {
+    id: 14,
+    type: 'student',
+    title_id: 'Keamanan Siber: Cyber Stalking (Ni Kadek Andini Dwi Putri)',
+    title_en: 'Cyber Security: Cyber Stalking (Ni Kadek Andini Dwi Putri)',
+    desc_id: 'Video edukasi karya siswa mengenai bahaya Cyber Stalking (penguntitan siber), dampaknya bagi korban, serta cara menghindarinya.',
+    desc_en: 'Educational video by students on the dangers of Cyber Stalking, its impact on victims, and how to prevent it.',
+    category_id: 'Keamanan Siber',
+    category_en: 'Cyber Security',
+    image: '',
+    tags: 'Informatika,Video,Keamanan Siber',
+    demo: 'https://www.youtube.com/watch?v=WQuRPinEpK8',
+    github: '#',
+    video_url: 'https://www.youtube.com/embed/WQuRPinEpK8',
+    order_num: 14
+  },
+  {
+    id: 15,
+    type: 'student',
+    title_id: 'Keamanan Siber: Cyber Hacking (Miftahul Huda)',
+    title_en: 'Cyber Security: Cyber Hacking (Miftahul Huda)',
+    desc_id: 'Video penjelasan karya siswa mengenai peretasan siber (Cyber Hacking), perbedaan etika peretasan, dan dasar-dasar pertahanan siber.',
+    desc_en: 'Student explanatory video on cyber hacking, ethical hacking differences, and basics of cyber defense.',
+    category_id: 'Keamanan Siber',
+    category_en: 'Cyber Security',
+    image: '',
+    tags: 'Informatika,Video,Keamanan Siber',
+    demo: 'https://www.youtube.com/watch?v=0V49fSqCFuI',
+    github: '#',
+    video_url: 'https://www.youtube.com/embed/0V49fSqCFuI',
+    order_num: 15
+  },
+  {
+    id: 16,
+    type: 'student',
+    title_id: 'Keamanan Siber: Cyber Bullying (Alifazieatun Nasuroh)',
+    title_en: 'Cyber Security: Cyber Bullying (Alifazieatun Nasuroh)',
+    desc_id: 'Video edukasi karya siswa tentang bahaya perundungan siber (Cyber Bullying) di kalangan remaja dan bagaimana cara menyikapinya.',
+    desc_en: 'Student educational video on the dangers of Cyber Bullying among teenagers and how to handle it.',
+    category_id: 'Keamanan Siber',
+    category_en: 'Cyber Security',
+    image: '',
+    tags: 'Informatika,Video,Keamanan Siber',
+    demo: 'https://www.youtube.com/watch?v=SRnABrun-ns',
+    github: '#',
+    video_url: 'https://www.youtube.com/embed/SRnABrun-ns',
+    order_num: 16
   }
 ];
 
