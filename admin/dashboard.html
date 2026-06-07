@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Web Profile Guru Informatika</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<div class="admin-layout">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="admin-sidebar" id="admin-sidebar" role="navigation" aria-label="Admin navigation">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">&lt;/&gt;</div>
+      <div class="sidebar-logo-text">
+        Admin Panel
+        <small>Guru Informatika</small>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="sidebar-section-label">Menu Utama</span>
+      <div class="sidebar-item active" data-section="overview">
+        <span class="sidebar-item-icon">📊</span> Overview
+      </div>
+      <div class="sidebar-item" data-section="projects">
+        <span class="sidebar-item-icon">🗂️</span> Portofolio & Proyek
+      </div>
+      <div class="sidebar-item" data-section="materials">
+        <span class="sidebar-item-icon">📚</span> Materi Ajar
+      </div>
+
+      <span class="sidebar-section-label">Profil</span>
+      <div class="sidebar-item" data-section="profile">
+        <span class="sidebar-item-icon">👤</span> Edit Profil
+      </div>
+      <div class="sidebar-item" data-section="contact">
+        <span class="sidebar-item-icon">📬</span> Informasi Kontak
+      </div>
+
+      <span class="sidebar-section-label">Sistem</span>
+      <div class="sidebar-item" data-section="settings">
+        <span class="sidebar-item-icon">⚙️</span> Pengaturan
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">A</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Administrator</div>
+          <div class="sidebar-user-role">Admin Panel</div>
+        </div>
+      </div>
+      <button class="logout-btn" id="logout-btn">🚪 Keluar</button>
+    </div>
+  </aside>
+
+  <!-- Sidebar overlay (mobile) -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- ============ MAIN ============ -->
+  <main class="admin-main">
+
+    <!-- Topbar -->
+    <header class="admin-topbar">
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <button class="admin-hamburger" id="admin-hamburger" aria-label="Toggle sidebar">
+          <span></span><span></span><span></span>
+        </button>
+        <span class="topbar-title" id="topbar-title">📊 Overview</span>
+      </div>
+      <div class="topbar-right">
+        <a href="../index.html" target="_blank" class="view-site-btn">
+          🌐 Lihat Website
+        </a>
+      </div>
+    </header>
+
+    <div class="admin-content">
+
+      <!-- ============================
+           SECTION: OVERVIEW
+           ============================ -->
+      <section class="admin-section active" id="section-overview">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon stat-icon-violet">🗂️</div>
+            <div>
+              <div class="stat-value" id="stat-projects">0</div>
+              <div class="stat-label">Total Proyek</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon stat-icon-violet">👨‍💻</div>
+            <div>
+              <div class="stat-value" id="stat-mine">0</div>
+              <div class="stat-label">Proyek Saya</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon stat-icon-cyan">👨‍🎓</div>
+            <div>
+              <div class="stat-value" id="stat-students">0</div>
+              <div class="stat-label">Karya Siswa</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon stat-icon-pink">📚</div>
+            <div>
+              <div class="stat-value" id="stat-materials">0</div>
+              <div class="stat-label">Materi Ajar</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon stat-icon-green">🏫</div>
+            <div>
+              <div class="stat-value" id="stat-schools">0</div>
+              <div class="stat-label">Sekolah</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;flex-wrap:wrap;">
+          <div class="table-wrap">
+            <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--border);font-weight:700;font-size:0.9rem;">
+              📋 Item Terbaru
+            </div>
+            <table class="admin-table">
+              <thead><tr><th>Judul</th><th>Tipe</th></tr></thead>
+              <tbody id="recent-list"></tbody>
+            </table>
+          </div>
+          <div class="table-wrap" style="padding:1.5rem;">
+            <div style="font-weight:700;margin-bottom:1rem;">🚀 Aksi Cepat</div>
+            <div style="display:flex;flex-direction:column;gap:0.75rem;">
+              <button class="btn btn-primary" onclick="navigateTo('projects');openProjectModal()">+ Tambah Proyek Baru</button>
+              <button class="btn btn-ghost" onclick="navigateTo('materials');openMaterialModal()">+ Tambah Materi Ajar</button>
+              <button class="btn btn-outline" onclick="navigateTo('profile')">✏️ Edit Profil</button>
+              <a href="../index.html" target="_blank" class="btn btn-success">🌐 Lihat Website</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================
+           SECTION: PROJECTS
+           ============================ -->
+      <section class="admin-section" id="section-projects">
+        <div class="panel-header">
+          <div class="panel-title">
+            Portofolio & Karya Siswa
+            <small>Tambah, edit, dan hapus proyek yang ditampilkan di website</small>
+          </div>
+          <button class="btn btn-primary" id="add-project-btn">+ Tambah Proyek</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Proyek</th>
+                <th>Kategori</th>
+                <th>Tipe</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="projects-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================
+           SECTION: MATERIALS
+           ============================ -->
+      <section class="admin-section" id="section-materials">
+        <div class="panel-header">
+          <div class="panel-title">
+            Materi Ajar
+            <small>Kelola PDF, slide, dan video pembelajaran</small>
+          </div>
+          <button class="btn btn-primary" id="add-material-btn">+ Tambah Materi</button>
+        </div>
+
+        <div class="table-wrap">
+          <div id="materials-table-area">
+            <!-- Rendered by admin.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================
+           SECTION: PROFILE
+           ============================ -->
+      <section class="admin-section" id="section-profile">
+        <div class="panel-header">
+          <div class="panel-title">
+            Edit Profil
+            <small>Informasi yang ditampilkan di halaman Beranda dan Tentang</small>
+          </div>
+          <button class="btn btn-primary" id="profile-save-btn">💾 Simpan Profil</button>
+        </div>
+
+        <form id="profile-form" class="admin-form" onsubmit="return false;">
+          <div style="display:grid;grid-template-columns:280px 1fr;gap:1.5rem;align-items:start;flex-wrap:wrap;">
+
+            <!-- Avatar & Stats -->
+            <div>
+              <div class="table-wrap" style="padding:1.5rem;text-align:center;margin-bottom:1rem;">
+                <div style="font-weight:700;margin-bottom:1rem;text-align:left;">🖼️ Foto Profil</div>
+                <div class="avatar-preview-circle">
+                  <img id="avatar-preview-img" src="" alt="Avatar" onerror="this.src=''">
+                </div>
+                <div style="margin-bottom:0.75rem;">
+                  <label class="form-label" style="text-align:left;display:block;">Upload dari komputer</label>
+                  <input type="file" id="avatar-file-input" accept="image/*" class="form-input" style="padding:0.4rem;">
+                </div>
+                <div>
+                  <label class="form-label" style="text-align:left;display:block;">Atau URL gambar</label>
+                  <input type="url" name="prof-avatar-url" class="form-input" placeholder="https://...">
+                </div>
+              </div>
+
+              <div class="table-wrap" style="padding:1.5rem;">
+                <div style="font-weight:700;margin-bottom:1rem;">📊 Statistik Hero</div>
+                <div class="form-group">
+                  <label class="form-label">Tahun Mengajar</label>
+                  <input type="number" name="prof-stat-years" class="form-input" min="0">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Siswa Terdidik</label>
+                  <input type="number" name="prof-stat-stu" class="form-input" min="0">
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                  <label class="form-label">Proyek Selesai</label>
+                  <input type="number" name="prof-stat-proj" class="form-input" min="0">
+                </div>
+              </div>
+            </div>
+
+            <!-- Main Info -->
+            <div>
+              <div class="table-wrap" style="padding:1.5rem;margin-bottom:1rem;">
+                <div style="font-weight:700;margin-bottom:1rem;">👤 Informasi Dasar</div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label required">Nama Lengkap</label>
+                    <input type="text" name="prof-name" class="form-input" placeholder="Nama lengkap Anda">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Tagline / Jabatan</label>
+                    <input type="text" name="prof-tagline" class="form-input" placeholder="Guru Informatika & Developer">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Badge Hero (Indonesia)</label>
+                    <input type="text" name="prof-badge-id" class="form-input" placeholder="Tersedia untuk Kolaborasi">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Badge Hero (English)</label>
+                    <input type="text" name="prof-badge-en" class="form-input" placeholder="Available for Collaboration">
+                  </div>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                  <label class="form-label">Kota</label>
+                  <input type="text" name="prof-city" class="form-input" placeholder="Nama kota Anda">
+                </div>
+              </div>
+
+              <div class="table-wrap" style="padding:1.5rem;margin-bottom:1rem;">
+                <div style="font-weight:700;margin-bottom:1rem;">📝 Bio (Paragraf 1)</div>
+                <div class="form-group">
+                  <label class="form-label">Indonesia</label>
+                  <textarea name="prof-bio-id" class="form-textarea" rows="3" placeholder="Bio dalam bahasa Indonesia..."></textarea>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                  <label class="form-label">English</label>
+                  <textarea name="prof-bio-en" class="form-textarea" rows="3" placeholder="Bio in English..."></textarea>
+                </div>
+              </div>
+
+              <div class="table-wrap" style="padding:1.5rem;">
+                <div style="font-weight:700;margin-bottom:1rem;">📝 Bio (Paragraf 2)</div>
+                <div class="form-group">
+                  <label class="form-label">Indonesia</label>
+                  <textarea name="prof-bio2-id" class="form-textarea" rows="3" placeholder="Paragraf kedua bio..."></textarea>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                  <label class="form-label">English</label>
+                  <textarea name="prof-bio2-en" class="form-textarea" rows="3" placeholder="Second paragraph in English..."></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Skills Editor -->
+          <div class="table-wrap" style="padding:1.5rem;margin-top:1.5rem;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+              <div style="font-weight:700;">⚡ Keahlian & Teknologi</div>
+              <button type="button" class="btn btn-ghost btn-sm" id="add-skill-btn">+ Tambah Skill</button>
+            </div>
+            <div class="skills-editor" id="skills-editor"></div>
+          </div>
+
+          <!-- Schools Editor -->
+          <div class="table-wrap" style="margin-top:1.5rem;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid var(--border);">
+              <div style="font-weight:700;">🏫 Tempat Mengajar</div>
+              <button type="button" class="btn btn-ghost btn-sm" id="add-school-btn">+ Tambah Sekolah</button>
+            </div>
+            <table class="admin-table">
+              <thead><tr><th>Icon</th><th>Sekolah</th><th>Status</th><th>Aksi</th></tr></thead>
+              <tbody id="schools-table-body"></tbody>
+            </table>
+          </div>
+
+          <!-- Experiences Editor -->
+          <div class="table-wrap" style="margin-top:1.5rem;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid var(--border);">
+              <div style="font-weight:700;">📅 Pengalaman / Timeline</div>
+              <button type="button" class="btn btn-ghost btn-sm" id="add-exp-btn">+ Tambah Pengalaman</button>
+            </div>
+            <table class="admin-table">
+              <thead><tr><th>Icon</th><th>Pengalaman</th><th>Aksi</th></tr></thead>
+              <tbody id="experiences-table-body"></tbody>
+            </table>
+          </div>
+        </form>
+      </section>
+
+      <!-- ============================
+           SECTION: CONTACT
+           ============================ -->
+      <section class="admin-section" id="section-contact">
+        <div class="panel-header">
+          <div class="panel-title">
+            Informasi Kontak
+            <small>Email, WhatsApp, dan media sosial yang ditampilkan di website</small>
+          </div>
+          <button class="btn btn-primary" id="contact-save-btn">💾 Simpan</button>
+        </div>
+
+        <form id="contact-form-admin" class="admin-form" onsubmit="return false;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+            <div class="table-wrap" style="padding:1.5rem;">
+              <div style="font-weight:700;margin-bottom:1rem;">📞 Kontak Langsung</div>
+              <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" name="con-email" class="form-input" placeholder="nama@email.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label">WhatsApp (format: 628xxx)</label>
+                <input type="text" name="con-whatsapp" class="form-input" placeholder="628123456789">
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Lokasi</label>
+                <input type="text" name="con-location" class="form-input" placeholder="Kota, Indonesia">
+              </div>
+            </div>
+
+            <div class="table-wrap" style="padding:1.5rem;">
+              <div style="font-weight:700;margin-bottom:1rem;">🔗 Media Sosial</div>
+              <div class="form-group">
+                <label class="form-label">GitHub URL</label>
+                <input type="url" name="con-github" class="form-input" placeholder="https://github.com/username">
+              </div>
+              <div class="form-group">
+                <label class="form-label">LinkedIn URL</label>
+                <input type="url" name="con-linkedin" class="form-input" placeholder="https://linkedin.com/in/username">
+              </div>
+              <div class="form-group">
+                <label class="form-label">YouTube URL</label>
+                <input type="url" name="con-youtube" class="form-input" placeholder="https://youtube.com/@channel">
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Instagram URL</label>
+                <input type="url" name="con-instagram" class="form-input" placeholder="https://instagram.com/username">
+              </div>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <!-- ============================
+           SECTION: SETTINGS
+           ============================ -->
+      <section class="admin-section" id="section-settings">
+        <div class="panel-header">
+          <div class="panel-title">
+            Pengaturan Akun
+            <small>Ganti username dan password admin</small>
+          </div>
+          <button class="btn btn-primary" id="settings-save-btn">💾 Simpan Pengaturan</button>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start;">
+          <div class="table-wrap" style="padding:1.5rem;">
+            <div style="font-weight:700;margin-bottom:0.5rem;">👤 Akun Saat Ini</div>
+            <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem;">
+              Email: <strong id="current-user-email" style="color:var(--text);">—</strong>
+            </div>
+            <div style="font-weight:700;margin-bottom:1rem;">🔒 Ganti Password</div>
+            <form id="settings-form" class="admin-form" onsubmit="return false;">
+              <div class="form-group">
+                <label class="form-label required">Password Baru</label>
+                <input type="password" name="set-new-password" class="form-input" placeholder="Minimal 6 karakter">
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label required">Konfirmasi Password Baru</label>
+                <input type="password" name="set-confirm-password" class="form-input" placeholder="Ulangi password baru">
+              </div>
+            </form>
+          </div>
+
+          <div class="table-wrap" style="padding:1.5rem;">
+            <div style="font-weight:700;margin-bottom:1rem;">ℹ️ Informasi Sistem</div>
+            <div style="font-size:0.85rem;color:var(--text-muted);line-height:2;">
+              <div>🗄️ Database: <strong style="color:var(--secondary);">Supabase PostgreSQL</strong></div>
+              <div>🔐 Auth: <strong style="color:var(--secondary);">Supabase Auth (JWT)</strong></div>
+              <div>📦 Storage: <strong style="color:var(--secondary);">Supabase Storage</strong></div>
+              <div>🌐 Hosting: <strong style="color:var(--text);">Netlify / Vercel / GitHub Pages</strong></div>
+            </div>
+            <div style="margin-top:1.5rem;padding:1rem;background:rgba(0,200,150,0.08);border:1px solid rgba(0,200,150,0.2);border-radius:12px;font-size:0.82rem;color:var(--success);">
+              ✅ Data tersimpan di cloud dan bisa diakses dari mana saja!
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- end admin-content -->
+  </main>
+</div><!-- end admin-layout -->
+
+<!-- ============================================
+     MODALS
+     ============================================ -->
+
+<!-- Project Modal -->
+<div class="modal-overlay" id="project-modal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 class="modal-title" id="project-modal-title">Tambah Proyek</h2>
+      <button class="modal-close-btn" id="project-modal-close" aria-label="Tutup">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="project-form" class="admin-form" onsubmit="return false;">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label required">Judul (Indonesia)</label>
+            <input type="text" name="proj-title-id" class="form-input" placeholder="Nama proyek dalam bahasa Indonesia">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Judul (English)</label>
+            <input type="text" name="proj-title-en" class="form-input" placeholder="Project name in English">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Kategori (Indonesia)</label>
+            <input type="text" name="proj-cat-id" class="form-input" placeholder="Web Development, Game Edukasi, dst.">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Kategori (English)</label>
+            <input type="text" name="proj-cat-en" class="form-input" placeholder="Web Development, Educational Game, etc.">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Deskripsi (Indonesia)</label>
+          <textarea name="proj-desc-id" class="form-textarea" rows="3" placeholder="Deskripsi proyek..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Deskripsi (English)</label>
+          <textarea name="proj-desc-en" class="form-textarea" rows="3" placeholder="Project description..."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label required">Tipe</label>
+            <select name="proj-type" class="form-select">
+              <option value="mine">👨‍💻 Proyek Saya</option>
+              <option value="student">👨‍🎓 Karya Siswa</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tags <span style="color:var(--text-dim);font-weight:400;">(pisah koma)</span></label>
+            <input type="text" name="proj-tags" class="form-input" placeholder="HTML,CSS,JavaScript,PHP">
+          </div>
+        </div>
+
+        <!-- Image Input -->
+        <div class="form-group">
+          <label class="form-label">Gambar Thumbnail</label>
+          <div class="image-preview" id="proj-img-preview">
+            <span class="image-preview-icon">🖼️</span>
+            <span class="image-preview-label">Preview gambar</span>
+          </div>
+          <div style="margin-bottom:0.5rem;">
+            <label class="form-label" style="margin-bottom:0.25rem;">Upload dari komputer</label>
+            <input type="file" id="proj-image-file" accept="image/*" class="form-input" style="padding:0.4rem;">
+          </div>
+          <div>
+            <label class="form-label" style="margin-bottom:0.25rem;">Atau masukkan URL gambar</label>
+            <input type="text" name="proj-image-url" id="proj-image-url" class="form-input" placeholder="https://... atau assets/img/nama.png">
+            <p class="form-hint">💡 Untuk gambar lokal, gunakan path relatif seperti: assets/img/nama.png</p>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Link Demo</label>
+            <input type="url" name="proj-demo" class="form-input" placeholder="https://demo.example.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Link GitHub</label>
+            <input type="url" name="proj-github" class="form-input" placeholder="https://github.com/...">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" id="project-modal-cancel">Batal</button>
+      <button class="btn btn-primary" id="project-save-btn">💾 Simpan Proyek</button>
+    </div>
+  </div>
+</div>
+
+<!-- Material Modal -->
+<div class="modal-overlay" id="material-modal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 class="modal-title" id="material-modal-title">Tambah Materi</h2>
+      <button class="modal-close-btn" id="material-modal-close" aria-label="Tutup">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="material-form" class="admin-form" onsubmit="return false;">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label required">Judul (Indonesia)</label>
+            <input type="text" name="mat-title-id" class="form-input" placeholder="Judul materi dalam bahasa Indonesia">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Judul (English)</label>
+            <input type="text" name="mat-title-en" class="form-input" placeholder="Material title in English">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Mata Pelajaran (Indonesia)</label>
+            <input type="text" name="mat-subject-id" class="form-input" placeholder="Pemrograman Web, Basis Data, dst.">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Subject (English)</label>
+            <input type="text" name="mat-subject-en" class="form-input" placeholder="Web Programming, Database, etc.">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Deskripsi (Indonesia)</label>
+          <textarea name="mat-desc-id" class="form-textarea" rows="2" placeholder="Deskripsi materi..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Deskripsi (English)</label>
+          <textarea name="mat-desc-en" class="form-textarea" rows="2" placeholder="Material description..."></textarea>
+        </div>
+        <div class="form-row-3">
+          <div class="form-group">
+            <label class="form-label required">Tipe File</label>
+            <select name="mat-type" id="mat-type" class="form-select">
+              <option value="pdf">📄 PDF</option>
+              <option value="slide">🖥️ Slide / PPT</option>
+              <option value="video">🎬 Video</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Jenjang / Kelas</label>
+            <input type="text" name="mat-level" class="form-input" placeholder="SMA, SMK RPL, dst.">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Ukuran / Durasi</label>
+            <input type="text" name="mat-size" class="form-input" placeholder="2.4 MB / YouTube">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Tahun Pembuatan</label>
+            <input type="text" name="mat-updated" class="form-input" placeholder="2024">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Link Download / Akses <span style="color:var(--text-dim);font-weight:400;">(Google Drive, dll)</span></label>
+            <input type="url" name="mat-url" class="form-input" placeholder="https://drive.google.com/...">
+          </div>
+        </div>
+        <div class="form-group" id="video-url-group" style="display:none;">
+          <label class="form-label">URL Video YouTube</label>
+          <input type="url" name="mat-video-url" class="form-input" placeholder="https://youtube.com/watch?v=... atau embed URL">
+          <p class="form-hint">💡 Masukkan URL YouTube biasa, akan otomatis dikonversi ke embed format.</p>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" id="material-modal-cancel">Batal</button>
+      <button class="btn btn-primary" id="material-save-btn">💾 Simpan Materi</button>
+    </div>
+  </div>
+</div>
+
+<!-- School Modal -->
+<div class="modal-overlay" id="school-modal" role="dialog" aria-modal="true">
+  <div class="modal-box" style="max-width:480px;">
+    <div class="modal-header">
+      <h2 class="modal-title" id="school-modal-title">Tambah Sekolah</h2>
+      <button class="modal-close-btn" id="school-modal-close" aria-label="Tutup">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="school-form" class="admin-form" onsubmit="return false;">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Icon Emoji</label>
+            <input type="text" name="school-icon" class="form-input" maxlength="4" placeholder="🏛️" style="text-align:center;font-size:1.5rem;">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Status</label>
+            <select name="school-status" class="form-select">
+              <option value="Aktif">Aktif</option>
+              <option value="Sebelumnya">Sebelumnya</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label required">Nama Sekolah</label>
+          <input type="text" name="school-name" class="form-input" placeholder="SMA Negeri 1 Kota Anda">
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">Detail / Mata Pelajaran</label>
+          <input type="text" name="school-detail" class="form-input" placeholder="Informatika · Kelas X, XI, XII">
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" id="school-modal-cancel">Batal</button>
+      <button class="btn btn-primary" id="school-save-btn">💾 Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- Experience Modal -->
+<div class="modal-overlay" id="exp-modal" role="dialog" aria-modal="true">
+  <div class="modal-box" style="max-width:480px;">
+    <div class="modal-header">
+      <h2 class="modal-title" id="exp-modal-title">Tambah Pengalaman</h2>
+      <button class="modal-close-btn" id="exp-modal-close" aria-label="Tutup">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="exp-form" class="admin-form" onsubmit="return false;">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Icon Emoji</label>
+            <input type="text" name="exp-icon" class="form-input" maxlength="4" placeholder="🎓" style="text-align:center;font-size:1.5rem;">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Periode</label>
+            <input type="text" name="exp-period" class="form-input" placeholder="2022 – Sekarang">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label required">Judul / Posisi</label>
+          <input type="text" name="exp-title" class="form-input" placeholder="Guru Informatika">
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">Tempat / Institusi</label>
+          <input type="text" name="exp-place" class="form-input" placeholder="SMA Negeri 1 · Kota Anda">
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" id="exp-modal-cancel">Batal</button>
+      <button class="btn btn-primary" id="exp-save-btn">💾 Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Dialog -->
+<div class="confirm-overlay" id="confirm-overlay" role="alertdialog">
+  <div class="confirm-box">
+    <div class="confirm-icon">⚠️</div>
+    <h3 class="confirm-title" id="confirm-title">Konfirmasi</h3>
+    <p class="confirm-desc" id="confirm-desc">Apakah Anda yakin?</p>
+    <div class="confirm-actions">
+      <button class="btn btn-outline" id="confirm-no-btn">Batal</button>
+      <button class="btn btn-danger" id="confirm-yes-btn">Ya, Lanjutkan</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+<!-- Supabase JS v2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/data.js"></script>
+<script src="js/admin.js"></script>
+
+</body>
+</html>
