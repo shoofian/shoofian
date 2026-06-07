@@ -1999,6 +1999,7 @@ ul, ol { list-style: none; }
 .footer-links {
   display: flex;
   gap: var(--space-xl);
+  flex-wrap: wrap;
 }
 
 .footer-link {
@@ -2132,7 +2133,7 @@ ul, ol { list-style: none; }
 
   .footer-inner { flex-direction: column; text-align: center; }
 
-  .footer-links { justify-content: center; }
+  .footer-links { justify-content: center; gap: var(--space-md); }
 }
 
 @media (max-width: 480px) {
