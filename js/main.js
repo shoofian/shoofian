@@ -24,21 +24,19 @@ const CONFIG = {
    ------------------------------------------------ */
 const LANG = {
   id: {
-    nav: { home:'Beranda', about:'Tentang', projects:'Portofolio', materials:'Materi Ajar', contact:'Kontak' },
+    nav: { home:'Beranda', about:'Tentang', projects:'Portofolio', wsClass:'WS Class', contact:'Kontak' },
     hero: {
       badge:'Tersedia untuk Kolaborasi', desc:'Bersemangat dalam mendidik generasi digital masa depan.',
       cta1:'Lihat Portofolio', cta2:'Hubungi Saya',
     },
-    projects: { filterAll:'Semua', filterMine:'Proyek Saya', filterStudent:'Karya Siswa' },
     materials: { filterAll:'Semua', filterPdf:'PDF', filterSlide:'Slide', filterVideo:'Video' },
   },
   en: {
-    nav: { home:'Home', about:'About', projects:'Portfolio', materials:'Materials', contact:'Contact' },
+    nav: { home:'Home', about:'About', projects:'Portfolio', wsClass:'WS Class', contact:'Contact' },
     hero: {
       badge:'Available for Collaboration', desc:'Passionate about educating the next generation of digital innovators.',
       cta1:'View Portfolio', cta2:'Contact Me',
     },
-    projects: { filterAll:'All', filterMine:'My Projects', filterStudent:'Student Works' },
     materials: { filterAll:'All', filterPdf:'PDF', filterSlide:'Slide', filterVideo:'Video' },
   }
 };
@@ -144,16 +142,30 @@ async function applyProfileToPage() {
   const skills = typeof p.skills === 'string' ? JSON.parse(p.skills) : (p.skills || []);
   renderSkills(skills);
 
-  // Translate project filters
-  const fAll = $('#filter-all-proj');
-  const fMine = $('#filter-mine');
+  // Translate navigation links
+  const navWsClass = $('#nav-ws-class');
+  if (navWsClass) navWsClass.textContent = currentLang === 'id' ? 'WS Class' : 'WS Class';
+  const mobWsClass = $('#nav-mobile-ws-class');
+  if (mobWsClass) mobWsClass.textContent = currentLang === 'id' ? 'WS Class' : 'WS Class';
+  const footWsClass = $('#footer-ws-class');
+  if (footWsClass) footWsClass.textContent = currentLang === 'id' ? 'WS Class' : 'WS Class';
+
+  // Translate WS Class filters
+  const fAllMat = $('#filter-all-mat');
+  const fPdf = $('#filter-pdf');
+  const fSlide = $('#filter-slide');
+  const fVideo = $('#filter-video');
+  if (fAllMat) fAllMat.innerHTML = currentLang === 'id' ? '📚 Semua Materi' : '📚 All Materials';
+  if (fPdf) fPdf.innerHTML = currentLang === 'id' ? '📄 PDF' : '📄 PDF';
+  if (fSlide) fSlide.innerHTML = currentLang === 'id' ? '🖥️ Slide' : '🖥️ Slides';
+  if (fVideo) fVideo.innerHTML = currentLang === 'id' ? '🎬 Video' : '🎬 Videos';
+
+  const fAllStudent = $('#filter-all-student');
   const fComp = $('#filter-student-comp');
   const fSec = $('#filter-student-sec');
-
-  if (fAll) fAll.innerHTML = currentLang === 'id' ? '🗂️ Semua' : '🗂️ All';
-  if (fMine) fMine.innerHTML = currentLang === 'id' ? '👨‍💻 Proyek Saya' : '👨‍💻 My Projects';
-  if (fComp) fComp.innerHTML = currentLang === 'id' ? '🎬 Karya: Berpikir Komputasional' : '🎬 Work: Computational Thinking';
-  if (fSec) fSec.innerHTML = currentLang === 'id' ? '🔒 Karya: Keamanan Siber' : '🔒 Work: Cyber Security';
+  if (fAllStudent) fAllStudent.innerHTML = currentLang === 'id' ? '🗂️ Semua Karya' : '🗂️ All Works';
+  if (fComp) fComp.innerHTML = currentLang === 'id' ? '🎬 Berpikir Komputasional' : '🎬 Computational Thinking';
+  if (fSec) fSec.innerHTML = currentLang === 'id' ? '🔒 Keamanan Siber' : '🔒 Cyber Security';
 }
 
 function renderSkills(skills) {
@@ -342,6 +354,7 @@ function initLangToggle() {
     await applyProfileToPage();
     await renderProjects();
     await renderMaterials();
+    await renderStudentWorks();
   }));
 }
 
@@ -353,46 +366,31 @@ async function renderProjects() {
   if (!grid) return;
   grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--color-text-muted);">⏳ Memuat proyek...</div>';
 
-  _cachedProjects = await DB.getProjects();
+  const allProjects = await DB.getProjects();
+  _cachedProjects = allProjects.filter(p => p.type === 'mine');
   grid.innerHTML = '';
 
   if (!_cachedProjects.length) {
-    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--color-text-muted);">Belum ada proyek.</div>';
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--color-text-muted);">Belum ada proyek pribadi.</div>';
     return;
   }
 
   _cachedProjects.forEach((proj, i) => {
-    const isHidden = currentProjectFilter !== 'all' && proj.type !== currentProjectFilter;
     const card = document.createElement('div');
-    card.className = `project-card reveal reveal-delay-${(i % 3) + 1}${isHidden ? ' hidden' : ''}`;
-    card.dataset.type = proj.type; card.dataset.id = proj.id;
-
-    const badgeClass = proj.type === 'mine' ? 'badge-mine' : 'badge-student';
-    const badgeText  = proj.type === 'mine'
-      ? (currentLang === 'id' ? 'Proyek Saya' : 'My Project')
-      : (currentLang === 'id' ? 'Karya Siswa' : 'Student Work');
+    card.className = `project-card reveal reveal-delay-${(i % 3) + 1}`;
+    card.dataset.id = proj.id;
 
     const tagsArr = (proj.tags || '').split(',').map(t => t.trim()).filter(Boolean);
-    const isStudent = proj.type.startsWith('student');
-    const tags = tagsArr.map(tag => `<span class="tag ${isStudent ? 'tag-cyan' : ''}">${tag}</span>`).join('');
+    const tags = tagsArr.map(tag => `<span class="tag">${tag}</span>`).join('');
 
     const title = currentLang === 'id' ? proj.title_id : (proj.title_en || proj.title_id);
     const desc  = currentLang === 'id' ? proj.desc_id  : (proj.desc_en  || proj.desc_id);
     const cat   = currentLang === 'id' ? proj.category_id : (proj.category_en || proj.category_id);
 
-    let imgUrl = proj.image;
-    if (!imgUrl && proj.video_url) {
-      const vidMatch = proj.video_url.match(/embed\/([^/?#]+)/);
-      if (vidMatch) {
-        imgUrl = `https://img.youtube.com/vi/${vidMatch[1]}/hqdefault.jpg`;
-      }
-    }
-    if (!imgUrl) imgUrl = 'assets/img/proj-1.png';
-
     card.innerHTML = `
       <div class="project-thumbnail">
-        <img src="${imgUrl}" alt="${title}" loading="lazy" onerror="this.src='assets/img/proj-1.png'">
-        <span class="project-type-badge ${badgeClass}">${badgeText}</span>
+        <img src="${proj.image || 'assets/img/proj-1.png'}" alt="${title}" loading="lazy" onerror="this.src='assets/img/proj-1.png'">
+        <span class="project-type-badge badge-mine">${currentLang === 'id' ? 'Proyek Saya' : 'My Project'}</span>
         <div class="project-overlay">
           <button class="overlay-btn">👁️ ${currentLang === 'id' ? 'Detail' : 'View Detail'}</button>
         </div>
@@ -416,13 +414,79 @@ async function renderProjects() {
   });
 }
 
-function initProjectFilters() {
-  $$('.project-filter-btn').forEach(btn => btn.addEventListener('click', () => {
-    $$('.project-filter-btn').forEach(b => b.classList.remove('active'));
+let currentStudentFilter = 'all';
+let _cachedStudentWorks = [];
+
+async function renderStudentWorks() {
+  const grid = $('#student-works-grid');
+  if (!grid) return;
+  grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--color-text-muted);">⏳ Memuat karya...</div>';
+
+  const allProjects = await DB.getProjects();
+  _cachedStudentWorks = allProjects.filter(p => p.type.startsWith('student'));
+  grid.innerHTML = '';
+
+  if (!_cachedStudentWorks.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--color-text-muted);">Belum ada karya siswa.</div>';
+    return;
+  }
+
+  _cachedStudentWorks.forEach((proj, i) => {
+    const isHidden = currentStudentFilter !== 'all' && proj.type !== currentStudentFilter;
+    const card = document.createElement('div');
+    card.className = `project-card reveal reveal-delay-${(i % 3) + 1}${isHidden ? ' hidden' : ''}`;
+    card.dataset.type = proj.type; card.dataset.id = proj.id;
+
+    const tagsArr = (proj.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+    const tags = tagsArr.map(tag => `<span class="tag tag-cyan">${tag}</span>`).join('');
+
+    const title = currentLang === 'id' ? proj.title_id : (proj.title_en || proj.title_id);
+    const desc  = currentLang === 'id' ? proj.desc_id  : (proj.desc_en  || proj.desc_id);
+    const cat   = currentLang === 'id' ? proj.category_id : (proj.category_en || proj.category_id);
+
+    let imgUrl = proj.image;
+    if (!imgUrl && proj.video_url) {
+      const vidMatch = proj.video_url.match(/embed\/([^/?#]+)/);
+      if (vidMatch) {
+        imgUrl = `https://img.youtube.com/vi/${vidMatch[1]}/hqdefault.jpg`;
+      }
+    }
+    if (!imgUrl) imgUrl = 'assets/img/proj-1.png';
+
+    card.innerHTML = `
+      <div class="project-thumbnail">
+        <img src="${imgUrl}" alt="${title}" loading="lazy" onerror="this.src='assets/img/proj-1.png'">
+        <span class="project-type-badge badge-student">${currentLang === 'id' ? 'Karya Siswa' : 'Student Work'}</span>
+        <div class="project-overlay">
+          <button class="overlay-btn">👁️ ${currentLang === 'id' ? 'Detail' : 'View Detail'}</button>
+        </div>
+      </div>
+      <div class="project-info">
+        <div class="project-category">${cat || ''}</div>
+        <h3 class="project-title">${title || ''}</h3>
+        <p class="project-desc">${desc || ''}</p>
+        <div class="project-tags">${tags}</div>
+      </div>`;
+
+    card.addEventListener('click', () => openProjectModal(proj));
+    grid.appendChild(card);
+  });
+
+  $$('#student-works-grid .reveal').forEach(el => {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    obs.observe(el);
+  });
+}
+
+function initStudentFilters() {
+  $$('.student-filter-btn').forEach(btn => btn.addEventListener('click', () => {
+    $$('.student-filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    currentProjectFilter = btn.dataset.filter;
-    $$('.project-card').forEach(card => {
-      const show = currentProjectFilter === 'all' || card.dataset.type === currentProjectFilter;
+    currentStudentFilter = btn.dataset.filter;
+    $$('#student-works-grid .project-card').forEach(card => {
+      const show = currentStudentFilter === 'all' || card.dataset.type === currentStudentFilter;
       card.classList.toggle('hidden', !show);
       if (show) requestAnimationFrame(() => card.classList.add('visible'));
     });
@@ -650,9 +714,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     ]);
 
     await renderProjects();
-    initProjectFilters();
     await renderMaterials();
     initMaterialFilters();
+    await renderStudentWorks();
+    initStudentFilters();
     initScrollReveal();
 
   } catch (err) {

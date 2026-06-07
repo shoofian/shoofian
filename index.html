@@ -57,7 +57,7 @@
       <li><a href="#hero"      class="nav-link active" id="nav-home">Beranda</a></li>
       <li><a href="#about"     class="nav-link"        id="nav-about">Tentang</a></li>
       <li><a href="#projects"  class="nav-link"        id="nav-projects">Portofolio</a></li>
-      <li><a href="#materials" class="nav-link"        id="nav-materials">Materi Ajar</a></li>
+      <li><a href="#ws-class"  class="nav-link"        id="nav-ws-class">WS Class</a></li>
       <li><a href="#contact"   class="nav-link"        id="nav-contact">Kontak</a></li>
     </ul>
 
@@ -82,7 +82,7 @@
   <a href="#hero"      class="nav-link">Beranda</a>
   <a href="#about"     class="nav-link">Tentang</a>
   <a href="#projects"  class="nav-link">Portofolio</a>
-  <a href="#materials" class="nav-link">Materi Ajar</a>
+  <a href="#ws-class"  class="nav-link" id="nav-mobile-ws-class">WS Class</a>
   <a href="#contact"   class="nav-link">Kontak</a>
   <div style="display:flex;gap:0.5rem;margin-top:1rem;">
     <button class="lang-btn active" data-lang="id">ID</button>
@@ -203,21 +203,12 @@
 
     <div class="about-grid">
 
-      <!-- Left: Schools & Bio -->
+      <!-- Left: Experience Timeline -->
       <div>
         <div class="reveal reveal-delay-1">
-          <p class="about-schools-title">🏫 Tempat Mengajar</p>
-
-          <div id="schools-container">
-            <!-- Rendered by main.js from localStorage -->
-          </div>
-        </div>
-
-        <!-- Experience Timeline -->
-        <div class="reveal reveal-delay-2" style="margin-top:2rem;">
-          <p class="about-schools-title">📅 Pengalaman</p>
+          <p class="about-schools-title">📅 Pengalaman Kerja & Pendidikan</p>
           <div class="experience-timeline" id="experiences-container">
-            <!-- Rendered by main.js from localStorage -->
+            <!-- Rendered dynamically -->
           </div>
         </div>
       </div>
@@ -295,7 +286,7 @@
 </section>
 
 <!-- ========================================
-     PROJECTS SECTION
+     PROJECTS SECTION (PORTFOLIO)
      ======================================== -->
 <section id="projects" class="section" aria-labelledby="projects-heading">
   <div class="container">
@@ -303,75 +294,92 @@
     <div class="section-header reveal">
       <div class="section-tag">🗂️ Portofolio</div>
       <h2 class="section-title" id="projects-heading">
-        Proyek & <span class="highlight">Karya Siswa</span>
+        Proyek <span class="highlight">Pribadi & Profesional</span>
       </h2>
       <p class="section-desc">
-        Kumpulan proyek pribadi dan karya terbaik siswa yang telah berhasil dibangun bersama.
+        Kumpulan proyek pengembangan sistem dan analisis data yang dikembangkan secara mandiri maupun profesional.
       </p>
-    </div>
-
-    <!-- Filter Bar -->
-    <div class="filter-bar reveal" role="group" aria-label="Project filter">
-      <button class="filter-btn project-filter-btn active" data-filter="all" id="filter-all-proj">
-        🗂️ Semua
-      </button>
-      <button class="filter-btn project-filter-btn" data-filter="mine" id="filter-mine">
-        👨‍💻 Proyek Saya
-      </button>
-      <button class="filter-btn project-filter-btn" data-filter="student-computational" id="filter-student-comp">
-        🎬 Karya: Berpikir Komputasional
-      </button>
-      <button class="filter-btn project-filter-btn" data-filter="student-security" id="filter-student-sec">
-        🔒 Karya: Keamanan Siber
-      </button>
     </div>
 
     <!-- Projects Grid (rendered by JS) -->
     <div id="projects-grid" class="projects-grid" role="list" aria-label="Project list">
-      <!-- Injected by main.js -->
+      <!-- Injected dynamically by main.js -->
     </div>
 
   </div>
 </section>
 
 <!-- ========================================
-     TEACHING MATERIALS SECTION
+     WS CLASS SECTION (LEARNING CENTRE)
      ======================================== -->
-<section id="materials" class="section" aria-labelledby="materials-heading">
+<section id="ws-class" class="section" aria-labelledby="ws-class-heading">
   <div class="container">
 
     <div class="section-header reveal">
-      <div class="section-tag">📚 Materi Ajar</div>
-      <h2 class="section-title" id="materials-heading">
-        Bahan Ajar <span class="highlight">Digital</span>
+      <div class="section-tag">🏫 WS CLASS</div>
+      <h2 class="section-title" id="ws-class-heading">
+        Ruang Belajar & <span class="highlight">Karya Siswa</span>
       </h2>
       <p class="section-desc">
-        Koleksi lengkap materi pembelajaran interaktif yang dapat diakses oleh siswa kapan saja dan di mana saja.
+        Pusat media pembelajaran digital, informasi tempat mengajar, dan wadah apresiasi untuk karya-karya terbaik siswa.
       </p>
     </div>
 
-    <!-- Filter -->
-    <div class="materials-filter-group reveal">
-      <span class="filter-label">// Filter berdasarkan tipe</span>
-      <div class="filter-bar" role="group" aria-label="Material type filter">
-        <button class="filter-btn material-filter-btn active" data-filter="all" id="filter-all-mat">
-          📚 Semua Materi
-        </button>
-        <button class="filter-btn material-filter-btn" data-filter="pdf" id="filter-pdf">
-          📄 PDF
-        </button>
-        <button class="filter-btn material-filter-btn" data-filter="slide" id="filter-slide">
-          🖥️ Slide
-        </button>
-        <button class="filter-btn material-filter-btn" data-filter="video" id="filter-video">
-          🎬 Video
-        </button>
+    <!-- 1. Tempat Mengajar -->
+    <div class="ws-class-sub-section reveal">
+      <h3 class="ws-sub-title">🏫 Tempat Mengajar</h3>
+      <div id="schools-container" class="schools-grid">
+        <!-- Injected dynamically by main.js -->
       </div>
     </div>
 
-    <!-- Materials Grid (rendered by JS) -->
-    <div id="materials-grid" class="materials-grid" role="list" aria-label="Materials list">
-      <!-- Injected by main.js -->
+    <!-- 2. Bahan Ajar Digital -->
+    <div class="ws-class-sub-section reveal" style="margin-top: 4rem;">
+      <h3 class="ws-sub-title">📚 Bahan Ajar Digital</h3>
+      <div class="materials-filter-group">
+        <span class="filter-label">// Filter berdasarkan tipe</span>
+        <div class="filter-bar" role="group" aria-label="Material type filter">
+          <button class="filter-btn material-filter-btn active" data-filter="all" id="filter-all-mat">
+            📚 Semua Materi
+          </button>
+          <button class="filter-btn material-filter-btn" data-filter="pdf" id="filter-pdf">
+            📄 PDF
+          </button>
+          <button class="filter-btn material-filter-btn" data-filter="slide" id="filter-slide">
+            🖥️ Slide
+          </button>
+          <button class="filter-btn material-filter-btn" data-filter="video" id="filter-video">
+            🎬 Video
+          </button>
+        </div>
+      </div>
+      
+      <div id="materials-grid" class="materials-grid" role="list" aria-label="Materials list">
+        <!-- Injected dynamically by main.js -->
+      </div>
+    </div>
+
+    <!-- 3. Galeri Karya Siswa -->
+    <div class="ws-class-sub-section reveal" style="margin-top: 4rem;">
+      <h3 class="ws-sub-title">🎬 Galeri Karya Siswa</h3>
+      <div class="materials-filter-group">
+        <span class="filter-label">// Filter berdasarkan topik</span>
+        <div class="filter-bar" role="group" aria-label="Student work filter">
+          <button class="filter-btn student-filter-btn active" data-filter="all" id="filter-all-student">
+            🗂️ Semua Karya
+          </button>
+          <button class="filter-btn student-filter-btn" data-filter="student-computational" id="filter-student-comp">
+            🎬 Berpikir Komputasional
+          </button>
+          <button class="filter-btn student-filter-btn" data-filter="student-security" id="filter-student-sec">
+            🔒 Keamanan Siber
+          </button>
+        </div>
+      </div>
+
+      <div id="student-works-grid" class="projects-grid" role="list" aria-label="Student works list">
+        <!-- Injected dynamically by main.js -->
+      </div>
     </div>
 
   </div>
@@ -410,11 +418,11 @@
               <div class="contact-item-value">wahyushofian@email.com</div>
             </div>
           </a>
-          <a href="https://wa.me/628123456789" class="contact-item" id="contact-wa" target="_blank" rel="noopener">
+          <a href="https://wa.me/6285705222102" class="contact-item" id="contact-wa" target="_blank" rel="noopener">
             <div class="contact-item-icon">💬</div>
             <div>
               <div class="contact-item-label">WhatsApp</div>
-              <div class="contact-item-value">+62 812-3456-789</div>
+              <div class="contact-item-value">+62 857-0522-2102</div>
             </div>
           </a>
           <div class="contact-item" id="contact-location">
@@ -515,7 +523,7 @@
         <a href="#hero"      class="footer-link">Beranda</a>
         <a href="#about"     class="footer-link">Tentang</a>
         <a href="#projects"  class="footer-link">Portofolio</a>
-        <a href="#materials" class="footer-link">Materi</a>
+        <a href="#ws-class"  class="footer-link" id="footer-ws-class">WS Class</a>
         <a href="#contact"   class="footer-link">Kontak</a>
       </nav>
     </div>

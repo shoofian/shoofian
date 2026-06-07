@@ -37,7 +37,7 @@ const STATIC_PROFILE = {
   // Kontak
   city: 'Berau',
   email: 'wahyushofian@email.com',
-  whatsapp: '628123456789',
+  whatsapp: '6285705222102',
   location: 'Berau, Kalimantan Timur, Indonesia',
   
   // Sosial Media
