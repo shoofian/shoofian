@@ -368,9 +368,18 @@ async function renderProjects() {
     const desc  = currentLang === 'id' ? proj.desc_id  : (proj.desc_en  || proj.desc_id);
     const cat   = currentLang === 'id' ? proj.category_id : (proj.category_en || proj.category_id);
 
+    let imgUrl = proj.image;
+    if (!imgUrl && proj.video_url) {
+      const vidMatch = proj.video_url.match(/embed\/([^/?#]+)/);
+      if (vidMatch) {
+        imgUrl = `https://img.youtube.com/vi/${vidMatch[1]}/hqdefault.jpg`;
+      }
+    }
+    if (!imgUrl) imgUrl = 'assets/img/proj-1.png';
+
     card.innerHTML = `
       <div class="project-thumbnail">
-        <img src="${proj.image || 'assets/img/proj-1.png'}" alt="${title}" loading="lazy" onerror="this.src='assets/img/proj-1.png'">
+        <img src="${imgUrl}" alt="${title}" loading="lazy" onerror="this.src='assets/img/proj-1.png'">
         <span class="project-type-badge ${badgeClass}">${badgeText}</span>
         <div class="project-overlay">
           <button class="overlay-btn">👁️ ${currentLang === 'id' ? 'Detail' : 'View Detail'}</button>
@@ -508,13 +517,23 @@ function openProjectModal(proj) {
   const tagsArr   = (proj.tags || '').split(',').map(t => t.trim()).filter(Boolean);
   const tags = tagsArr.map(tag => `<span class="tag ${isStudent ? 'tag-cyan' : ''}">${tag}</span>`).join('');
   title.textContent = projTitle;
+
+  let mediaHtml = '';
+  if (proj.video_url) {
+    mediaHtml = `<div class="video-embed-wrapper" style="border-radius:12px;overflow:hidden;margin-bottom:1.5rem;">
+      <iframe src="${proj.video_url}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="width:100%;aspect-ratio:16/9;border:0;"></iframe>
+    </div>`;
+  } else {
+    mediaHtml = `<img src="${proj.image || 'assets/img/proj-1.png'}" alt="${projTitle}" class="modal-img" onerror="this.style.display='none'">`;
+  }
+
   body.innerHTML = `
-    <img src="${proj.image || 'assets/img/proj-1.png'}" alt="${projTitle}" class="modal-img" onerror="this.style.display='none'">
+    ${mediaHtml}
     <p class="modal-desc">${projDesc || ''}</p>
     <div class="modal-tags">${tags}</div>
     <div class="modal-actions">
-      <a href="${proj.demo || '#'}" class="btn btn-primary" target="_blank">🌐 ${currentLang === 'id' ? 'Lihat Demo' : 'View Demo'}</a>
-      <a href="${proj.github || '#'}" class="btn btn-outline" target="_blank">💻 GitHub</a>
+      <a href="${proj.demo || '#'}" class="btn btn-primary" target="_blank">🌐 ${currentLang === 'id' ? (proj.video_url ? 'Buka di YouTube' : 'Lihat Demo') : (proj.video_url ? 'Open on YouTube' : 'View Demo')}</a>
+      ${proj.github && proj.github !== '#' ? `<a href="${proj.github}" class="btn btn-outline" target="_blank">💻 GitHub</a>` : ''}
     </div>`;
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
