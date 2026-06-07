@@ -134,6 +134,7 @@ async function applyProfileToPage() {
   if (p.social_linkedin)  { const el = $('#social-linkedin');  if(el) el.href = p.social_linkedin; }
   if (p.social_youtube)   { const el = $('#social-youtube');   if(el) el.href = p.social_youtube; }
   if (p.social_instagram) { const el = $('#social-instagram'); if(el) el.href = p.social_instagram; }
+  if (p.social_twitter)   { const el = $('#social-twitter');   if(el) el.href = p.social_twitter; }
 
   // Footer name
   const fn = $('#footer-name');
@@ -142,6 +143,17 @@ async function applyProfileToPage() {
   // Skills
   const skills = typeof p.skills === 'string' ? JSON.parse(p.skills) : (p.skills || []);
   renderSkills(skills);
+
+  // Translate project filters
+  const fAll = $('#filter-all-proj');
+  const fMine = $('#filter-mine');
+  const fComp = $('#filter-student-comp');
+  const fSec = $('#filter-student-sec');
+
+  if (fAll) fAll.innerHTML = currentLang === 'id' ? '🗂️ Semua' : '🗂️ All';
+  if (fMine) fMine.innerHTML = currentLang === 'id' ? '👨‍💻 Proyek Saya' : '👨‍💻 My Projects';
+  if (fComp) fComp.innerHTML = currentLang === 'id' ? '🎬 Karya: Berpikir Komputasional' : '🎬 Work: Computational Thinking';
+  if (fSec) fSec.innerHTML = currentLang === 'id' ? '🔒 Karya: Keamanan Siber' : '🔒 Work: Cyber Security';
 }
 
 function renderSkills(skills) {
@@ -361,7 +373,7 @@ async function renderProjects() {
       : (currentLang === 'id' ? 'Karya Siswa' : 'Student Work');
 
     const tagsArr = (proj.tags || '').split(',').map(t => t.trim()).filter(Boolean);
-    const isStudent = proj.type === 'student';
+    const isStudent = proj.type.startsWith('student');
     const tags = tagsArr.map(tag => `<span class="tag ${isStudent ? 'tag-cyan' : ''}">${tag}</span>`).join('');
 
     const title = currentLang === 'id' ? proj.title_id : (proj.title_en || proj.title_id);
@@ -513,7 +525,7 @@ function openProjectModal(proj) {
   if (!overlay) return;
   const projTitle = currentLang === 'id' ? proj.title_id : (proj.title_en || proj.title_id);
   const projDesc  = currentLang === 'id' ? proj.desc_id  : (proj.desc_en  || proj.desc_id);
-  const isStudent = proj.type === 'student';
+  const isStudent = proj.type.startsWith('student');
   const tagsArr   = (proj.tags || '').split(',').map(t => t.trim()).filter(Boolean);
   const tags = tagsArr.map(tag => `<span class="tag ${isStudent ? 'tag-cyan' : ''}">${tag}</span>`).join('');
   title.textContent = projTitle;

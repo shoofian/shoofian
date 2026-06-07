@@ -1,10 +1,9 @@
 /**
- * data.js — Static Data Manager (v4 - Static Edition)
+ * data.js — Static Data Manager (v5 - Organized Edition)
  * Web Profile Guru Informatika & Quality Assurance Analyst
  *
  * 👤 Pemilik: Wahyu Shofian
  * 📂 Menyimpan seluruh data portofolio & CV secara lokal (Statis).
- *    Untuk mengubah konten website, Anda cukup memperbarui data di dalam file ini.
  */
 
 'use strict';
@@ -37,15 +36,16 @@ const STATIC_PROFILE = {
   
   // Kontak
   city: 'Berau',
-  email: 'wahyushofian@email.com', // Silakan ganti dengan email asli Anda
-  whatsapp: '628123456789',        // Silakan ganti dengan nomor WA asli Anda
+  email: 'wahyushofian@email.com',
+  whatsapp: '628123456789',
   location: 'Berau, Kalimantan Timur, Indonesia',
   
   // Sosial Media
   social_github: 'https://github.com/shoofian',
-  social_linkedin: 'https://linkedin.com/in/shoofian', // Silakan ganti dengan username asli LinkedIn Anda jika berbeda
-  social_youtube: '#',
-  social_instagram: '#',
+  social_linkedin: 'https://linkedin.com/in/shoofian',
+  social_youtube: 'https://youtube.com/@WahyuShofian',
+  social_instagram: 'https://instagram.com/shoofian',
+  social_twitter: 'https://x.com/shoofian',
   
   // Daftar Keahlian (Skills)
   skills: [
@@ -159,7 +159,7 @@ const STATIC_PROJECTS = [
   },
   {
     id: 3,
-    type: 'student',
+    type: 'student-computational',
     title_id: 'Berpikir Komputasional: Mengatasi Rasa Tidak Nyaman (Kelompok Lemot)',
     title_en: 'Computational Thinking: Dealing with Discomfort (Kelompok Lemot)',
     desc_id: 'Video presentasi karya siswa SMAN 4 Berau yang menerapkan konsep berpikir komputasional untuk memecahkan masalah rasa tidak nyaman.',
@@ -175,7 +175,7 @@ const STATIC_PROJECTS = [
   },
   {
     id: 4,
-    type: 'student',
+    type: 'student-computational',
     title_id: 'Berpikir Komputasional: Mengatasi Siswa Terlambat (Kelompok Yakin Deks)',
     title_en: 'Computational Thinking: Resolving Student Tardiness (Kelompok Yakin Deks)',
     desc_id: 'Video karya siswa yang menganalisis masalah keterlambatan sekolah menggunakan 4 pilar berpikir komputasional.',
@@ -191,7 +191,7 @@ const STATIC_PROJECTS = [
   },
   {
     id: 5,
-    type: 'student',
+    type: 'student-computational',
     title_id: 'Berpikir Komputasional: Melindungi Kesehatan Mental (Kelompok Trio Cyber)',
     title_en: 'Computational Thinking: Protecting Mental Health (Kelompok Trio Cyber)',
     desc_id: 'Analisis sistematis mengenai langkah-langkah praktis menjaga kesehatan mental siswa dengan pendekatan dekomposisi dan algoritma.',
@@ -207,7 +207,7 @@ const STATIC_PROJECTS = [
   },
   {
     id: 6,
-    type: 'student',
+    type: 'student-computational',
     title_id: 'Berpikir Komputasional: Cara Membuat Cookies (Kelompok Venezia)',
     title_en: 'Computational Thinking: Making Cookies (Kelompok Venezia)',
     desc_id: 'Video penjelasan alur algoritma dan abstraksi dalam proses pembuatan kue kering (cookies) yang efisien.',
@@ -223,7 +223,7 @@ const STATIC_PROJECTS = [
   },
   {
     id: 7,
-    type: 'student',
+    type: 'student-computational',
     title_id: 'Berpikir Komputasional: Cara Membuat Es Kopi Susu (Kelompok Cihuyyy)',
     title_en: 'Computational Thinking: Making Iced Coffee Milk (Kelompok Cihuyyy)',
     desc_id: 'Penerapan pilar berpikir komputasional dalam menyusun langkah-langkah membuat es kopi susu yang nikmat.',
@@ -239,7 +239,7 @@ const STATIC_PROJECTS = [
   },
   {
     id: 8,
-    type: 'student',
+    type: 'student-computational',
     title_id: 'Berpikir Komputasional: Membuat Iklan Sederhana & Efektif (Sembakungan FC)',
     title_en: 'Computational Thinking: Creating Simple & Effective Ads (Sembakungan FC)',
     desc_id: 'Cara merancang strategi periklanan sederhana yang terstruktur dengan pola berpikir komputasional.',
@@ -255,7 +255,7 @@ const STATIC_PROJECTS = [
   },
   {
     id: 9,
-    type: 'student',
+    type: 'student-computational',
     title_id: 'Berpikir Komputasional: Persiapan Menghadapi Ujian (Trio Miauw)',
     title_en: 'Computational Thinking: Preparing for Exams (Trio Miauw)',
     desc_id: 'Strategi belajar terstruktur menggunakan metode dekomposisi untuk mempersiapkan diri menghadapi ujian sekolah.',
@@ -271,7 +271,7 @@ const STATIC_PROJECTS = [
   },
   {
     id: 10,
-    type: 'student',
+    type: 'student-computational',
     title_id: 'Berpikir Komputasional: Mengatur Waktu (Kelompok Nebula)',
     title_en: 'Computational Thinking: Time Management (Kelompok Nebula)',
     desc_id: 'Analisis manajemen waktu siswa agar lebih produktif dengan menggunakan prinsip abstraksi dan pengenalan pola.',
@@ -287,7 +287,7 @@ const STATIC_PROJECTS = [
   },
   {
     id: 11,
-    type: 'student',
+    type: 'student-computational',
     title_id: 'Berpikir Komputasional: Cara Mengelola Sampah (Kelompok Kodomo)',
     title_en: 'Computational Thinking: Managing Waste (Kelompok Kodomo)',
     desc_id: 'Solusi komputasi untuk memilah dan mengolah sampah rumah tangga di lingkungan sekitar.',
@@ -303,7 +303,7 @@ const STATIC_PROJECTS = [
   },
   {
     id: 12,
-    type: 'student',
+    type: 'student-computational',
     title_id: 'Berpikir Komputasional: Membuat Cookies yang Efektif (Kelompok Amazone)',
     title_en: 'Computational Thinking: Making Cookies Effectively (Kelompok Amazone)',
     desc_id: 'Video karya siswa tentang optimalisasi resep kue kering (cookies) dengan pendekatan berpikir komputasional.',
@@ -319,7 +319,7 @@ const STATIC_PROJECTS = [
   },
   {
     id: 13,
-    type: 'student',
+    type: 'student-computational',
     title_id: 'Berpikir Komputasional: Sekolah Adiwiyata (Kelompok Aigo)',
     title_en: 'Computational Thinking: Adiwiyata School (Kelompok Aigo)',
     desc_id: 'Langkah terstruktur untuk mewujudkan sekolah peduli lingkungan (Adiwiyata) dengan memanfaatkan pilar informatika.',
@@ -335,7 +335,7 @@ const STATIC_PROJECTS = [
   },
   {
     id: 14,
-    type: 'student',
+    type: 'student-security',
     title_id: 'Keamanan Siber: Cyber Stalking (Ni Kadek Andini Dwi Putri)',
     title_en: 'Cyber Security: Cyber Stalking (Ni Kadek Andini Dwi Putri)',
     desc_id: 'Video edukasi karya siswa mengenai bahaya Cyber Stalking (penguntitan siber), dampaknya bagi korban, serta cara menghindarinya.',
@@ -351,7 +351,7 @@ const STATIC_PROJECTS = [
   },
   {
     id: 15,
-    type: 'student',
+    type: 'student-security',
     title_id: 'Keamanan Siber: Cyber Hacking (Miftahul Huda)',
     title_en: 'Cyber Security: Cyber Hacking (Miftahul Huda)',
     desc_id: 'Video penjelasan karya siswa mengenai peretasan siber (Cyber Hacking), perbedaan etika peretasan, dan dasar-dasar pertahanan siber.',
@@ -367,7 +367,7 @@ const STATIC_PROJECTS = [
   },
   {
     id: 16,
-    type: 'student',
+    type: 'student-security',
     title_id: 'Keamanan Siber: Cyber Bullying (Alifazieatun Nasuroh)',
     title_en: 'Cyber Security: Cyber Bullying (Alifazieatun Nasuroh)',
     desc_id: 'Video edukasi karya siswa tentang bahaya perundungan siber (Cyber Bullying) di kalangan remaja dan bagaimana cara menyikapinya.',
@@ -456,7 +456,6 @@ const STATIC_MATERIALS = [
 // ============================================================
 
 const DB = {
-  // Mocking client to avoid breaks
   client: {
     auth: {
       getSession: async () => ({ data: { session: null } }),
@@ -485,7 +484,6 @@ const DB = {
     return STATIC_MATERIALS;
   },
 
-  // Auth functions return neutral/disabled states
   async login() {
     return { success: false, error: 'Database dinamis (Supabase) dinonaktifkan di edisi statis ini.' };
   },
